@@ -19,6 +19,13 @@ COPY --from=compiler /minio/minio /opt/minio/minio
 RUN wget -q https://dl.min.io/client/mc/release/linux-$TARGETARCH/mc && \
 chmod +x /opt/minio/mc && \
 ln -s /opt/minio/minio /usr/bin/minio && \
-ln -s /opt/minio/mc /usr/bin/mc
+ln -s /opt/minio/mc /usr/bin/mc && \
+apt-get update && \
+apt-get install -y s3cmd && \
+apt-get -y --purge autoremove && \
+apt-get autoclean && \
+apt-get clean
+
+COPY .s3cfg /root/.s3cfg
 
 ENV MINIO_HOME /opt/minio
